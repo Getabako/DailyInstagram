@@ -2,10 +2,12 @@
  * トレンドリサーチモジュール
  * Gemini APIを使用して最新のトレンド情報を取得し、
  * 具体的で役立つコンテンツを生成する
+ * デザインルールに基づいて最新トピックを使用
  */
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { getConfig } from './config.js';
 import { logger } from './logger.js';
+import { designRules } from './designRules.js';
 import type { CategoryType } from './types.js';
 
 // トレンド情報の型定義
@@ -51,21 +53,34 @@ export class TrendResearcher {
 
   /**
    * カテゴリに応じた最新トレンドをリサーチ
+   * デザインルールの最新/古いトピック情報を使用
    */
   async researchTrend(category: CategoryType): Promise<TrendInfo> {
-    const researchPrompts: Record<CategoryType, string> = {
-      ai: this.getAIResearchPrompt(),
-      business: this.getBusinessResearchPrompt(),
-      education: this.getEducationResearchPrompt(),
-      development: this.getDevelopmentResearchPrompt(),
-      activity: this.getActivityResearchPrompt(),
-      announcement: this.getAnnouncementResearchPrompt(),
-    };
-
-    const prompt = researchPrompts[category];
-
     try {
       logger.info(`${category}カテゴリのトレンドをリサーチ中...`);
+
+      // デザインルールを読み込み
+      const requirements = await designRules.getTrendResearchRequirements();
+      const outdatedTopics = await designRules.getOutdatedTopics();
+
+      // カテゴリに応じたプロンプトを取得
+      let prompt: string;
+      if (category === 'ai') {
+        prompt = await this.getAIResearchPromptWithRules();
+      } else if (category === 'business') {
+        prompt = await this.getBusinessResearchPromptWithRules();
+      } else {
+        // その他は同期版を使用
+        const syncPrompts: Record<CategoryType, string> = {
+          ai: this.getAIResearchPrompt(),
+          business: this.getBusinessResearchPrompt(),
+          education: this.getEducationResearchPrompt(),
+          development: this.getDevelopmentResearchPrompt(),
+          activity: this.getActivityResearchPrompt(),
+          announcement: this.getAnnouncementResearchPrompt(),
+        };
+        prompt = syncPrompts[category];
+      }
 
       const result = await this.model.generateContent(prompt);
       const response = await result.response;
@@ -78,8 +93,18 @@ export class TrendResearcher {
       }
 
       const trendInfo = JSON.parse(jsonMatch[0]) as TrendInfo;
-      logger.success(`トレンドリサーチ完了: ${trendInfo.topic}`);
 
+      // 古いトピックを使用していないかチェック
+      const isOutdated = outdatedTopics.some(old =>
+        trendInfo.topic.toLowerCase().includes(old.toLowerCase().split('（')[0])
+      );
+
+      if (isOutdated) {
+        logger.warn(`古いトピック "${trendInfo.topic}" が検出されました。最新トピックに切り替えます。`);
+        return this.getDefaultTrend(category);
+      }
+
+      logger.success(`トレンドリサーチ完了: ${trendInfo.topic}`);
       return trendInfo;
     } catch (error) {
       logger.error('トレンドリサーチに失敗、デフォルトトピックを使用');
@@ -177,26 +202,37 @@ export class TrendResearcher {
 
   /**
    * AI/テック系のリサーチプロンプト
+   * デザインルールから最新トピックを取得
    */
-  private getAIResearchPrompt(): string {
+  private async getAIResearchPromptWithRules(): Promise<string> {
+    const currentTopics = await designRules.getCurrentAITopics();
+    const outdatedTopics = await designRules.getOutdatedTopics();
+
     return `あなたはAI・テクノロジーの最新動向に詳しいリサーチャーです。
-2024年後半〜2025年1月現在の最新AIトレンドをリサーチしてください。
+2025年後半〜2026年1月現在の最新AIトレンドをリサーチしてください。
+
+【最新トピック一覧（必ずこれらから選択）】
+${currentTopics.map(t => `- ${t}`).join('\n')}
+
+【使用禁止（古い情報）】
+${outdatedTopics.map(t => `- ${t}`).join('\n')}
 
 【調査対象】
-- 最新のAIモデル（Claude, GPT, Gemini, Llama等の最新バージョン）
-- AI開発ツール（Cursor, Copilot, v0, Bolt等）
-- 話題のAIサービス（ChatGPT新機能, Claude Artifacts, Perplexity等）
-- 生成AI（画像: Midjourney, DALL-E, 動画: Sora, Runway等）
+- 最新のAIモデル（Claude Opus 4.5, GPT-5, Gemini 2.0等）
+- AI開発ツール（Cursor AI, Windsurf, v0, Bolt等）
+- 話題のAIサービス（Perplexity, NotebookLM等）
+- 生成AI（動画: Sora, 画像: Midjourney v6.1等）
 - YouTube/TikTokで話題のAI活用法
 
 【重要】以下の点を必ず含めてください：
 - 具体的な使い方やテクニック
 - 実際に試せる無料の方法
 - 知らないと損する新機能
+- 2026年1月現在の最新情報のみ使用
 
 【出力形式（JSON）】
 {
-  "topic": "具体的なトピック名（例: Claude 3.5 Sonnetの新機能Artifacts）",
+  "topic": "具体的なトピック名（最新トピック一覧から選択）",
   "description": "このトピックの概要説明（100文字程度）",
   "whyTrending": "なぜ今話題なのか（50文字程度）",
   "keyPoints": [
@@ -216,22 +252,118 @@ export class TrendResearcher {
   }
 
   /**
-   * ビジネス/副業系のリサーチプロンプト
+   * AI/テック系のリサーチプロンプト（同期版・後方互換用）
    */
-  private getBusinessResearchPrompt(): string {
+  private getAIResearchPrompt(): string {
+    return `あなたはAI・テクノロジーの最新動向に詳しいリサーチャーです。
+2025年後半〜2026年1月現在の最新AIトレンドをリサーチしてください。
+
+【最新トピック（必ずこれらから選択）】
+- Claude Opus 4.5 / Claude 4（最新）
+- GPT-4o / GPT-5（最新）
+- Gemini 2.0 / Gemini Ultra
+- Cursor AI / Windsurf
+- Sora（動画生成）
+- NotebookLM
+- Perplexity AI
+
+【使用禁止（古い情報）】
+- Claude 3.5 Sonnet（Claude Opus 4.5が最新）
+- GPT-4（GPT-4o/GPT-5が最新）
+- Midjourney v5（v6.1以降が最新）
+- 2024年以前のニュース
+
+【出力形式（JSON）】
+{
+  "topic": "具体的なトピック名（最新トピックから選択）",
+  "description": "このトピックの概要説明（100文字程度）",
+  "whyTrending": "なぜ今話題なのか（50文字程度）",
+  "keyPoints": [
+    "重要ポイント1（具体的に）",
+    "重要ポイント2（具体的に）",
+    "重要ポイント3（具体的に）"
+  ],
+  "practicalTips": [
+    "すぐに試せる具体的なアドバイス1",
+    "すぐに試せる具体的なアドバイス2",
+    "すぐに試せる具体的なアドバイス3"
+  ],
+  "hashtags": ["#AI", "#関連タグ5つ程度"],
+  "imageKeywords": ["画像生成に使えるキーワード（例: AI interface, code editor, chatbot）"],
+  "sources": ["参考にした情報源"]
+}`;
+  }
+
+  /**
+   * ビジネス/副業系のリサーチプロンプト（デザインルール連携版）
+   */
+  private async getBusinessResearchPromptWithRules(): Promise<string> {
+    const currentTopics = await designRules.getCurrentBusinessTopics();
+
     return `あなたは副業・ビジネストレンドに詳しいリサーチャーです。
-2024年後半〜2025年1月現在の最新の稼ぎ方・副業トレンドをリサーチしてください。
+2025年後半〜2026年1月現在の最新の稼ぎ方・副業トレンドをリサーチしてください。
+
+【最新トピック一覧（必ずこれらから選択）】
+${currentTopics.map(t => `- ${t}`).join('\n')}
 
 【調査対象】
 - AI活用の副業（AI画像でLINEスタンプ、ChatGPTでKindle出版等）
 - クリエイター収益（YouTube, TikTok, Instagram収益化）
 - スキル販売（ココナラ, ストアカ, タイムチケット等）
-- 最新のフリーランス案件トレンド
+- プロンプト販売（PromptBase等）
 - YouTube/TikTokで話題の副業法
 
 【重要】以下の点を必ず含めてください：
 - 初期費用ゼロから始められる方法
-- 具体的な収益目安
+- 具体的な収益目安（月額）
+- 実際の成功例
+- 2026年1月現在の最新情報のみ使用
+
+【出力形式（JSON）】
+{
+  "topic": "具体的な副業/ビジネストピック名（最新トピックから選択）",
+  "description": "このトピックの概要説明（100文字程度）",
+  "whyTrending": "なぜ今話題なのか（50文字程度）",
+  "keyPoints": [
+    "重要ポイント1（具体的な数字を含む）",
+    "重要ポイント2",
+    "重要ポイント3"
+  ],
+  "practicalTips": [
+    "今日から始められる具体的なステップ1",
+    "ステップ2",
+    "ステップ3"
+  ],
+  "hashtags": ["#副業", "#関連タグ5つ程度"],
+  "imageKeywords": ["money, growth chart, laptop work等"],
+  "sources": ["参考にした情報源"]
+}`;
+  }
+
+  /**
+   * ビジネス/副業系のリサーチプロンプト
+   */
+  private getBusinessResearchPrompt(): string {
+    return `あなたは副業・ビジネストレンドに詳しいリサーチャーです。
+2025年後半〜2026年1月現在の最新の稼ぎ方・副業トレンドをリサーチしてください。
+
+【最新トピック（必ずこれらから選択）】
+- AI画像でLINEスタンプ販売
+- AIでKindle出版
+- プロンプト販売（PromptBase等）
+- AI動画でYouTube収益化
+- Canva×AIでデザイン素材販売
+
+【調査対象】
+- AI活用の副業（AI画像でLINEスタンプ、ChatGPTでKindle出版等）
+- クリエイター収益（YouTube, TikTok, Instagram収益化）
+- スキル販売（ココナラ, ストアカ, タイムチケット等）
+- プロンプト販売（PromptBase等）
+- YouTube/TikTokで話題の副業法
+
+【重要】以下の点を必ず含めてください：
+- 初期費用ゼロから始められる方法
+- 具体的な収益目安（月額）
 - 実際の成功例
 
 【出力形式（JSON）】
@@ -390,17 +522,18 @@ export class TrendResearcher {
 
   /**
    * デフォルトのトレンド情報を取得
+   * デザインルールに基づいて最新トピックを使用
    */
   private getDefaultTrend(category: CategoryType): TrendInfo {
     const defaults: Record<CategoryType, TrendInfo> = {
       ai: {
-        topic: 'Claude 3.5 Sonnetの活用法',
-        description: 'Anthropicの最新AIモデルClaude 3.5 Sonnetの効果的な使い方',
-        whyTrending: 'GPT-4を超える性能と無料で使える手軽さ',
-        keyPoints: ['コード生成が得意', 'Artifactsでリアルタイムプレビュー', '日本語が自然'],
-        practicalTips: ['プロンプトは具体的に', 'コード生成は段階的に', 'エラーはそのまま貼り付け'],
-        hashtags: ['#AI', '#Claude', '#ChatGPT', '#生成AI', '#プログラミング'],
-        imageKeywords: ['AI chat interface', 'code generation', 'Claude AI'],
+        topic: 'Claude Opus 4.5の活用法',
+        description: 'Anthropicの最新AIモデルClaude Opus 4.5の効果的な使い方。業界最高クラスの性能を持つ大規模言語モデル。',
+        whyTrending: '2025年末リリースの最新モデルで、推論能力が大幅向上',
+        keyPoints: ['最高クラスのコード生成能力', 'Claude Codeで開発効率10倍', '複雑な推論タスクに強い'],
+        practicalTips: ['Claude Codeをターミナルで使う', '長文タスクはOpusで、短文はSonnetで', 'Artifactsでリアルタイムプレビュー'],
+        hashtags: ['#AI', '#Claude', '#ClaudeOpus', '#生成AI', '#プログラミング', '#2026'],
+        imageKeywords: ['AI chat interface', 'code generation', 'Claude AI', 'modern workspace'],
         sources: ['Anthropic公式']
       },
       business: {

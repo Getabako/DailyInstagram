@@ -1,0 +1,117 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-01-07",
+  "description": "Instagram投稿のデザインルール。このファイルはコンテンツ生成時に必ず読み込まれます。",
+
+  "imageGeneration": {
+    "strictNoText": {
+      "enabled": true,
+      "description": "生成画像に文字を一切含めない",
+      "rules": [
+        "背景画像にテキスト、文字、ロゴを絶対に含めない",
+        "看板、標識、ポスターなどに文字を表示しない",
+        "コード画面を表示する場合もテキストは最小限でぼかす",
+        "数字、アルファベット、日本語、絵文字も禁止",
+        "ブランドロゴやウォーターマークも禁止"
+      ],
+      "promptSuffix": "CRITICAL: Absolutely NO text, letters, numbers, signs, logos, watermarks, or any readable characters anywhere in the image. All text areas must be blurred or removed."
+    },
+    "style": {
+      "format": "portrait",
+      "aspectRatio": "4:5",
+      "quality": "high resolution, 4K quality",
+      "colorScheme": "vibrant, eye-catching, Instagram-worthy"
+    }
+  },
+
+  "contentRules": {
+    "activityReports": {
+      "mustUseRealPhotos": true,
+      "description": "活動報告では必ず実際の写真を使用する",
+      "rules": [
+        "活動報告カテゴリでは必ずraw_photosから実際の写真を使用",
+        "メンバー（高崎、山崎、井上、加賀屋、Y君）が写っている写真を優先",
+        "笑顔の写真を優先的に選択",
+        "イベントに関連する写真を選択",
+        "抽象的な背景は使用禁止"
+      ]
+    },
+    "announcements": {
+      "description": "お知らせ投稿のルール",
+      "rules": [
+        "イベント告知は具体的な日時・場所を含める",
+        "if塾のメンバー写真を可能な限り使用"
+      ]
+    },
+    "columns": {
+      "description": "コラム投稿（AI、ビジネス、教育）のルール",
+      "rules": [
+        "必ず最新のトレンド情報をリサーチしてから生成",
+        "2025年以前の古い情報は使用禁止",
+        "具体的で実用的な情報を含める",
+        "「保存したい」と思わせる価値のある内容"
+      ]
+    }
+  },
+
+  "trendResearch": {
+    "enabled": true,
+    "description": "最新トレンドのリサーチルール",
+    "requirements": [
+      "2025年後半〜2026年1月現在の最新情報を使用",
+      "古いバージョン（Claude 3.5等）ではなく最新バージョンを紹介",
+      "YouTube、TikTok、Instagramでバズっているトピックを優先",
+      "実際に試せる具体的な方法を含める"
+    ],
+    "outdatedTopics": [
+      "Claude 3.5 Sonnet（Claude 4/Opus 4.5が最新）",
+      "GPT-4（GPT-4oやGPT-5が最新）",
+      "Midjourney v5（v6.1以降が最新）",
+      "2024年以前のニュース"
+    ],
+    "currentTopics": {
+      "ai": [
+        "Claude Opus 4.5 / Claude 4",
+        "GPT-4o / GPT-5",
+        "Gemini 2.0 / Gemini Ultra",
+        "Cursor AI / Windsurf",
+        "Sora（動画生成）",
+        "NotebookLM",
+        "Perplexity AI"
+      ],
+      "business": [
+        "AI画像でLINEスタンプ販売",
+        "AIでKindle出版",
+        "プロンプト販売（PromptBase等）",
+        "AI動画でYouTube収益化",
+        "Canva×AIでデザイン素材販売"
+      ],
+      "education": [
+        "AI時代に必要なスキル",
+        "プログラミング的思考",
+        "デジタルリテラシー教育",
+        "探究学習・STEAM教育"
+      ]
+    }
+  },
+
+  "members": {
+    "description": "if塾メンバー情報",
+    "list": [
+      {"name": "高崎", "role": "代表", "aliases": ["タカサキ"]},
+      {"name": "山崎", "role": "メンバー", "aliases": ["山﨑", "ヤマザキ"]},
+      {"name": "井上", "role": "メンバー", "aliases": ["イノウエ"]},
+      {"name": "加賀屋", "role": "メンバー", "aliases": ["カガヤ"]},
+      {"name": "Y君", "role": "メンバー", "aliases": ["Yくん"]}
+    ]
+  },
+
+  "htmlTemplate": {
+    "description": "HTMLテンプレートのルール",
+    "rules": [
+      "画像プロンプトをそのまま表示しない",
+      "スライドのheadline/pointsのみを表示",
+      "テキストは読みやすいフォントサイズで"
+    ]
+  }
+}

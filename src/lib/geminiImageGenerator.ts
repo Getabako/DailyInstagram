@@ -1,6 +1,7 @@
 /**
  * Gemini 2.5 Flash Image API を使用した画像生成モジュール
  * カテゴリに応じた写真選択とImage-to-Image機能を提供
+ * デザインルールに基づいて文字禁止を強制
  */
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import fs from 'fs/promises';
@@ -8,6 +9,7 @@ import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { getConfig, PATHS, IMAGE_SIZES, DEFAULT_PROMPTS } from './config.js';
 import { logger } from './logger.js';
+import { designRules } from './designRules.js';
 import type { GeminiImageResponse, ImageGenerationOptions } from './types.js';
 
 // 写真カテゴリのキーワードマッピング
@@ -135,6 +137,7 @@ export class GeminiImageGenerator {
 
   /**
    * プロンプトから画像を生成
+   * デザインルールに基づいて文字禁止を強制
    */
   async generateImage(options: ImageGenerationOptions): Promise<GeminiImageResponse> {
     const { width, height, prompt, style } = options;
@@ -143,12 +146,16 @@ export class GeminiImageGenerator {
       logger.info(`画像生成開始: ${width}x${height}`);
       logger.debug(`プロンプト: ${prompt}`);
 
-      // プロンプトを構築
+      // デザインルールから文字禁止のサフィックスを取得
+      const noTextSuffix = await designRules.getImagePromptSuffix();
+
+      // プロンプトを構築（文字禁止ルールを強制適用）
       const fullPrompt = `Generate an image with the following specifications:
 - Size: ${width}x${height} pixels
 - Style: ${style || 'modern, professional, clean'}
 - Content: ${prompt}
-- Important: No text in the image, suitable as background for overlaying text later.`;
+- CRITICAL REQUIREMENT: No text, letters, numbers, signs, logos, watermarks, or any readable characters anywhere in the image. All surfaces must be clean without any writing.
+${noTextSuffix}`;
 
       const response = await this.model.generateContent(fullPrompt);
       const result = response.response;
@@ -230,6 +237,7 @@ export class GeminiImageGenerator {
 
   /**
    * 具体的なプロンプトから背景画像を生成（コンテンツ連動型）
+   * デザインルールに基づいて文字禁止を強制
    */
   async generateContentSpecificBackground(
     customPrompt: string,
@@ -237,15 +245,19 @@ export class GeminiImageGenerator {
   ): Promise<GeminiImageResponse> {
     const dimensions = size === 'carousel' ? IMAGE_SIZES.carousel : IMAGE_SIZES.reel;
 
+    // デザインルールから文字禁止のサフィックスを取得
+    const noTextSuffix = await designRules.getImagePromptSuffix();
+
     const enhancedPrompt = `${customPrompt}
 
 Requirements:
 - High quality, 4K resolution
 - Modern, eye-catching design
 - Suitable for text overlay (avoid busy center areas)
-- No text or letters in the image
 - ${size === 'reel' ? 'Vertical orientation, mobile-first design' : 'Portrait format'}
-- Vibrant colors, professional look`;
+- Vibrant colors, professional look
+- ABSOLUTELY NO TEXT, LETTERS, NUMBERS, SIGNS, LOGOS, OR WATERMARKS ANYWHERE IN THE IMAGE
+${noTextSuffix}`;
 
     return this.generateImage({
       width: dimensions.width,
@@ -280,6 +292,7 @@ Requirements:
   /**
    * 既存の写真を元にImage-to-Imageで新しい背景画像を生成
    * 元の写真のスタイルを保ちつつ、テキストオーバーレイに適した画像を生成
+   * デザインルールに基づいて文字禁止を強制
    */
   async generateFromReference(referencePath: string, category: string = ''): Promise<GeminiImageResponse> {
     try {
@@ -290,15 +303,18 @@ Requirements:
 
       logger.info(`参照画像から新しい画像を生成: ${path.basename(referencePath)}`);
 
+      // デザインルールから文字禁止のサフィックスを取得
+      const noTextSuffix = await designRules.getImagePromptSuffix();
+
       // カテゴリに応じた追加プロンプト
       let styleHint = 'professional, modern aesthetic';
-      if (category.includes('お知らせ') || category.includes('告知')) {
+      if (category.includes('お知らせ') || category.includes('告知') || category === 'announcement') {
         styleHint = 'celebratory, exciting, announcement style with warm colors';
-      } else if (category.includes('授業') || category.includes('学習')) {
+      } else if (category.includes('授業') || category.includes('学習') || category === 'education') {
         styleHint = 'educational, studious atmosphere, calm and focused';
-      } else if (category.includes('活動') || category.includes('イベント')) {
+      } else if (category.includes('活動') || category.includes('イベント') || category === 'activity') {
         styleHint = 'dynamic, energetic, event atmosphere';
-      } else if (category.includes('成功') || category.includes('実績')) {
+      } else if (category.includes('成功') || category.includes('実績') || category === 'business') {
         styleHint = 'achievement, success, uplifting atmosphere';
       }
 
@@ -320,7 +336,12 @@ Key requirements:
 - Add dynamic elements like light rays, bokeh, or subtle patterns
 - Size: 1080x1350 pixels (Instagram portrait format)
 - Output should be visually striking and attention-grabbing
-- NO text in the output image`,
+
+CRITICAL - ABSOLUTELY NO TEXT:
+- NO text, letters, numbers, signs, or readable characters anywhere in the output image
+- NO logos, watermarks, or brand names
+- All surfaces (walls, signs, screens, clothing) must be clean without any writing
+${noTextSuffix}`,
       ]);
 
       const result = response.response;
