@@ -25,7 +25,6 @@
       position: relative;
       display: flex;
       flex-direction: column;
-      background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 100%);
     }
 
     .background-image {
@@ -35,119 +34,224 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      z-index: -1;
-      filter: blur(3px);
+      z-index: 0;
+      filter: blur(4px) brightness(0.9);
     }
 
-    .header {
-      padding: 60px 60px 40px;
+    /* Vibrant gradient overlay */
+    .gradient-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        180deg,
+        rgba(78, 205, 196, 0.85) 0%,
+        rgba(85, 98, 255, 0.7) 30%,
+        rgba(128, 0, 255, 0.6) 60%,
+        rgba(255, 0, 128, 0.7) 100%
+      );
       z-index: 1;
     }
 
+    /* Decorative shapes */
+    .shape {
+      position: absolute;
+      z-index: 2;
+    }
+
+    .shape-1 {
+      top: -80px;
+      left: -80px;
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(135deg, rgba(255, 230, 109, 0.5), rgba(255, 107, 53, 0.3));
+      border-radius: 50%;
+    }
+
+    .shape-2 {
+      bottom: 200px;
+      right: -100px;
+      width: 350px;
+      height: 350px;
+      background: linear-gradient(45deg, rgba(255, 107, 157, 0.4), rgba(255, 107, 53, 0.3));
+      border-radius: 50%;
+    }
+
+    .shape-3 {
+      top: 40%;
+      left: -50px;
+      width: 150px;
+      height: 150px;
+      background: rgba(255, 255, 255, 0.2);
+      transform: rotate(45deg);
+    }
+
+    .header {
+      padding: 70px 70px 50px;
+      z-index: 10;
+      position: relative;
+    }
+
+    .headline-wrapper {
+      background: linear-gradient(135deg, rgba(255, 107, 53, 0.95), rgba(255, 107, 157, 0.95));
+      padding: 30px 50px;
+      border-radius: 25px;
+      display: inline-block;
+      box-shadow:
+        0 15px 50px rgba(0, 0, 0, 0.3),
+        0 0 40px rgba(255, 107, 53, 0.3);
+      border: 3px solid rgba(255, 255, 255, 0.3);
+    }
+
     .headline {
-      font-size: 88px;
+      font-size: 72px;
       font-weight: 900;
       color: #ffffff;
       text-shadow:
-        -5px -5px 0 #4ECDC4,
-        5px -5px 0 #4ECDC4,
-        -5px 5px 0 #4ECDC4,
-        5px 5px 0 #4ECDC4,
-        -7px -7px 0 #000,
-        7px -7px 0 #000,
-        -7px 7px 0 #000,
-        7px 7px 0 #000;
+        -3px -3px 0 rgba(0, 0, 0, 0.3),
+        3px 3px 6px rgba(0, 0, 0, 0.4);
       letter-spacing: 0.05em;
     }
 
     .content {
       flex: 1;
-      padding: 40px 60px;
+      padding: 30px 70px;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: 40px;
-      z-index: 1;
+      gap: 35px;
+      z-index: 10;
     }
 
     .point-item {
       display: flex;
       align-items: center;
-      gap: 30px;
-      background: rgba(255,255,255,0.95);
-      padding: 40px 50px;
+      gap: 35px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 245, 235, 0.95));
+      padding: 40px 45px;
       border-radius: 30px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      box-shadow:
+        0 15px 50px rgba(0, 0, 0, 0.25),
+        inset 0 -5px 20px rgba(255, 107, 53, 0.1);
+      border-left: 8px solid;
+      border-image: linear-gradient(180deg, #FF6B35, #FF6B9D) 1;
+      transform: translateX(0);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .point-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, rgba(255, 107, 53, 0.1), transparent);
+      pointer-events: none;
     }
 
     .point-icon {
-      width: 80px;
-      height: 80px;
-      background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+      width: 90px;
+      height: 90px;
+      background: linear-gradient(135deg, #FF6B35 0%, #FF6B9D 50%, #FFE66D 100%);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-    }
-
-    .point-icon svg {
-      width: 48px;
-      height: 48px;
-      fill: white;
+      box-shadow:
+        0 8px 25px rgba(255, 107, 53, 0.4),
+        inset 0 -3px 10px rgba(0, 0, 0, 0.2);
     }
 
     .checkmark {
-      font-size: 48px;
+      font-size: 52px;
       color: white;
       font-weight: 900;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
     .point-text {
-      font-size: 48px;
+      font-size: 46px;
       font-weight: 700;
-      color: #333;
+      color: #2d2d2d;
       line-height: 1.4;
     }
 
     .brand-badge {
       position: absolute;
-      bottom: 60px;
-      right: 60px;
-      background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+      bottom: 90px;
+      right: 80px;
+      background: linear-gradient(135deg, #FF6B35 0%, #FF6B9D 50%, #FFE66D 100%);
       color: white;
-      font-size: 36px;
+      font-size: 40px;
       font-weight: 900;
-      padding: 20px 40px;
-      border-radius: 50px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+      padding: 22px 45px;
+      border-radius: 55px;
+      box-shadow:
+        0 10px 40px rgba(255, 107, 53, 0.5),
+        0 0 30px rgba(255, 107, 53, 0.3);
+      z-index: 10;
+      border: 3px solid rgba(255, 255, 255, 0.4);
     }
 
     .slide-indicator {
       position: absolute;
-      bottom: 60px;
-      left: 60px;
+      bottom: 100px;
+      left: 80px;
       display: flex;
-      gap: 12px;
+      gap: 15px;
+      z-index: 10;
     }
 
     .indicator-dot {
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.4);
+      background: rgba(255, 255, 255, 0.4);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
     }
 
     .indicator-dot.active {
-      background: #4ECDC4;
+      background: linear-gradient(135deg, #FFE66D, #FF6B35);
+      box-shadow: 0 0 20px rgba(255, 230, 109, 0.6);
     }
+
+    /* Floating decorations */
+    .float-deco {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      z-index: 3;
+    }
+
+    .float-1 { top: 15%; right: 10%; width: 60px; height: 60px; }
+    .float-2 { top: 50%; right: 5%; width: 40px; height: 40px; }
+    .float-3 { bottom: 25%; left: 5%; width: 50px; height: 50px; }
   </style>
 </head>
 <body>
   <div class="container">
     <img class="background-image" src="{{BACKGROUND_IMAGE}}" alt="">
+    <div class="gradient-overlay"></div>
+
+    <!-- Decorative shapes -->
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+
+    <!-- Floating decorations -->
+    <div class="float-deco float-1"></div>
+    <div class="float-deco float-2"></div>
+    <div class="float-deco float-3"></div>
+
     <div class="header">
-      <h2 class="headline">{{HEADLINE}}</h2>
+      <div class="headline-wrapper">
+        <h2 class="headline">{{HEADLINE}}</h2>
+      </div>
     </div>
     <div class="content">
       {{POINTS}}

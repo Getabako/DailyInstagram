@@ -1,5 +1,6 @@
 /**
  * Gemini 2.5 Flash Image API を使用した画像生成モジュール
+ * カテゴリに応じた写真選択とImage-to-Image機能を提供
  */
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import fs from 'fs/promises';
@@ -9,9 +10,45 @@ import { getConfig, PATHS, IMAGE_SIZES, DEFAULT_PROMPTS } from './config.js';
 import { logger } from './logger.js';
 import type { GeminiImageResponse, ImageGenerationOptions } from './types.js';
 
+// 写真カテゴリのキーワードマッピング
+const PHOTO_CATEGORY_KEYWORDS = {
+  // お知らせ・告知系
+  announcement: [
+    '記念撮影', '記念写真', '集合写真', 'ピース', '笑顔',
+    '立っている', 'イベント', '発表', '表彰'
+  ],
+  // 授業風景
+  lesson: [
+    '授業', '教室', 'PC作業', 'ノートPC', '座っている',
+    '勉強', '学習', '操作', '作業'
+  ],
+  // 活動内容・イベント
+  activity: [
+    'イベント', '体験', 'ゲーム', '大会', 'e-sport', 'eスポーツ',
+    'マイクラ', 'ストリートファイター', 'RPG', '発表会',
+    'ワークスペース', 'コワーク'
+  ],
+  // 成功事例・実績
+  success: [
+    '景品', '受賞', '優勝', '表彰', '発表', '壇上',
+    '紹介', 'プレゼン', '大会'
+  ],
+  // チーム・メンバー紹介
+  team: [
+    '集合写真', '並んで', 'メンバー', 'クラスメイト',
+    '肩を組んで', 'if塾', '高崎', '山崎', '加賀屋', '井上'
+  ],
+  // 技術・テック系
+  tech: [
+    'PC', 'ノートPC', 'コンピューター', 'プログラミング',
+    'ゲーム', 'コントローラー', 'e-sport', 'モニター'
+  ],
+};
+
 export class GeminiImageGenerator {
   private genAI: GoogleGenerativeAI;
   private model: ReturnType<GoogleGenerativeAI['getGenerativeModel']>;
+  private cachedPhotos: Map<string, string[]> = new Map();
 
   constructor() {
     const config = getConfig();
@@ -24,6 +61,76 @@ export class GeminiImageGenerator {
         responseModalities: ['Text', 'Image'],
       },
     });
+  }
+
+  /**
+   * raw_photosフォルダの写真を読み込んでキャッシュ
+   */
+  async loadAndCachePhotos(): Promise<void> {
+    try {
+      const files = await fs.readdir(PATHS.rawPhotos);
+      const imageFiles = files.filter((f) =>
+        /\.(jpg|jpeg|png|webp|JPG|JPEG|PNG)$/i.test(f)
+      );
+
+      // カテゴリごとに写真を分類
+      for (const category of Object.keys(PHOTO_CATEGORY_KEYWORDS)) {
+        const keywords = PHOTO_CATEGORY_KEYWORDS[category as keyof typeof PHOTO_CATEGORY_KEYWORDS];
+        const matchingPhotos = imageFiles.filter((filename) =>
+          keywords.some((keyword) => filename.includes(keyword))
+        );
+        this.cachedPhotos.set(category, matchingPhotos);
+        logger.debug(`カテゴリ "${category}": ${matchingPhotos.length} 枚の写真を分類`);
+      }
+
+      // 全ての写真も保存
+      this.cachedPhotos.set('all', imageFiles);
+      logger.info(`${imageFiles.length} 枚の写真をロードしました`);
+    } catch (error) {
+      logger.warn('写真のロードに失敗しました');
+    }
+  }
+
+  /**
+   * カテゴリに基づいて適切な写真を選択
+   */
+  async getPhotoByCategory(category: string): Promise<string | null> {
+    // キャッシュがなければロード
+    if (this.cachedPhotos.size === 0) {
+      await this.loadAndCachePhotos();
+    }
+
+    // カテゴリを判定
+    let targetCategory = 'all';
+
+    const categoryLower = category.toLowerCase();
+    if (categoryLower.includes('お知らせ') || categoryLower.includes('announcement') || categoryLower.includes('告知')) {
+      targetCategory = 'announcement';
+    } else if (categoryLower.includes('授業') || categoryLower.includes('lesson') || categoryLower.includes('学習')) {
+      targetCategory = 'lesson';
+    } else if (categoryLower.includes('活動') || categoryLower.includes('activity') || categoryLower.includes('イベント')) {
+      targetCategory = 'activity';
+    } else if (categoryLower.includes('成功') || categoryLower.includes('事例') || categoryLower.includes('success') || categoryLower.includes('実績')) {
+      targetCategory = 'success';
+    } else if (categoryLower.includes('チーム') || categoryLower.includes('team') || categoryLower.includes('メンバー')) {
+      targetCategory = 'team';
+    } else if (categoryLower.includes('ai') || categoryLower.includes('テク') || categoryLower.includes('tech') || categoryLower.includes('プログラミング')) {
+      targetCategory = 'tech';
+    }
+
+    const photos = this.cachedPhotos.get(targetCategory) || this.cachedPhotos.get('all') || [];
+
+    if (photos.length === 0) {
+      logger.warn(`カテゴリ "${targetCategory}" の写真が見つかりません`);
+      return null;
+    }
+
+    // ランダムに選択
+    const randomPhoto = photos[Math.floor(Math.random() * photos.length)];
+    const photoPath = path.join(PATHS.rawPhotos, randomPhoto);
+
+    logger.info(`カテゴリ "${targetCategory}" から写真を選択: ${randomPhoto}`);
+    return photoPath;
   }
 
   /**
@@ -113,7 +220,7 @@ export class GeminiImageGenerator {
       width: IMAGE_SIZES.carousel.width,
       height: IMAGE_SIZES.carousel.height,
       prompt,
-      style: 'modern, vibrant, professional',
+      style: 'modern, vibrant, professional, eye-catching gradients',
     });
   }
 
@@ -135,21 +242,34 @@ export class GeminiImageGenerator {
       width: IMAGE_SIZES.reel.width,
       height: IMAGE_SIZES.reel.height,
       prompt: prompt + '\nVertical orientation for mobile viewing.',
-      style: 'dynamic, engaging, mobile-first',
+      style: 'dynamic, engaging, mobile-first, vibrant colors',
     });
   }
 
   /**
-   * 既存の写真を解析してスタイルに合った画像を生成
+   * 既存の写真を元にImage-to-Imageで新しい背景画像を生成
+   * 元の写真のスタイルを保ちつつ、テキストオーバーレイに適した画像を生成
    */
-  async generateFromReference(referencePath: string): Promise<GeminiImageResponse> {
+  async generateFromReference(referencePath: string, category: string = ''): Promise<GeminiImageResponse> {
     try {
       // 参照画像を読み込む
       const imageBuffer = await fs.readFile(referencePath);
       const base64Image = imageBuffer.toString('base64');
-      const mimeType = referencePath.endsWith('.png') ? 'image/png' : 'image/jpeg';
+      const mimeType = referencePath.toLowerCase().endsWith('.png') ? 'image/png' : 'image/jpeg';
 
-      logger.info(`参照画像から新しい画像を生成: ${referencePath}`);
+      logger.info(`参照画像から新しい画像を生成: ${path.basename(referencePath)}`);
+
+      // カテゴリに応じた追加プロンプト
+      let styleHint = 'professional, modern aesthetic';
+      if (category.includes('お知らせ') || category.includes('告知')) {
+        styleHint = 'celebratory, exciting, announcement style with warm colors';
+      } else if (category.includes('授業') || category.includes('学習')) {
+        styleHint = 'educational, studious atmosphere, calm and focused';
+      } else if (category.includes('活動') || category.includes('イベント')) {
+        styleHint = 'dynamic, energetic, event atmosphere';
+      } else if (category.includes('成功') || category.includes('実績')) {
+        styleHint = 'achievement, success, uplifting atmosphere';
+      }
 
       const response = await this.model.generateContent([
         {
@@ -158,12 +278,18 @@ export class GeminiImageGenerator {
             data: base64Image,
           },
         },
-        `Based on this reference image, generate a similar styled background image suitable for Instagram.
-         - Match the color scheme and mood
-         - Create an abstract/geometric interpretation
-         - No text, suitable as background for overlaying text
-         - Professional, modern aesthetic
-         - Size: 1080x1350 pixels`,
+        `Based on this reference image, create a stylized artistic background suitable for Instagram.
+
+Key requirements:
+- Transform the photo into an artistic, eye-catching background
+- Apply vibrant gradient overlays and color effects
+- Keep the essence and mood of the original photo
+- Style: ${styleHint}
+- Make it suitable for overlaying text (slightly blurred/abstract areas)
+- Add dynamic elements like light rays, bokeh, or subtle patterns
+- Size: 1080x1350 pixels (Instagram portrait format)
+- Output should be visually striking and attention-grabbing
+- NO text in the output image`,
       ]);
 
       const result = response.response;
@@ -210,7 +336,7 @@ export class GeminiImageGenerator {
   }
 
   /**
-   * raw_photos フォルダからランダムに画像を選択
+   * raw_photos フォルダからランダムに画像を選択（後方互換性用）
    */
   async getRandomRawPhoto(): Promise<string | null> {
     try {
@@ -232,20 +358,48 @@ export class GeminiImageGenerator {
 
   /**
    * カルーセル投稿用の5枚の背景画像を生成
+   * お知らせ、授業風景、活動内容の場合は元写真からImage-to-Imageで生成
    */
   async generateCarouselBackgrounds(category: string): Promise<string[]> {
     const backgrounds: string[] = [];
 
-    // まず既存の写真があるか確認
-    const rawPhoto = await this.getRandomRawPhoto();
+    // カテゴリに応じた写真を取得
+    const shouldUseRawPhoto = this.shouldUseRawPhotos(category);
+    let selectedPhotos: string[] = [];
+
+    if (shouldUseRawPhoto) {
+      // 複数の写真を選択（重複を避ける）
+      await this.loadAndCachePhotos();
+      const usedPhotos = new Set<string>();
+
+      for (let i = 0; i < 5; i++) {
+        const photo = await this.getPhotoByCategory(category);
+        if (photo && !usedPhotos.has(photo)) {
+          selectedPhotos.push(photo);
+          usedPhotos.add(photo);
+        }
+      }
+      logger.info(`カテゴリ "${category}" 用に ${selectedPhotos.length} 枚の写真を選択`);
+    }
 
     for (let i = 0; i < 5; i++) {
       let result: GeminiImageResponse;
 
-      // 表紙と最終ページは新規生成、中間ページは参照画像があれば使用
-      if (rawPhoto && i > 0 && i < 4) {
-        result = await this.generateFromReference(rawPhoto);
+      // 元写真がある場合はImage-to-Imageを使用
+      if (shouldUseRawPhoto && selectedPhotos.length > 0) {
+        const photoIndex = i % selectedPhotos.length;
+        const rawPhoto = selectedPhotos[photoIndex];
+
+        logger.info(`スライド ${i + 1}: 元写真からImage-to-Image生成`);
+        result = await this.generateFromReference(rawPhoto, category);
+
+        // 失敗した場合はフォールバック
+        if (!result.success) {
+          logger.warn(`Image-to-Image失敗、通常の生成にフォールバック`);
+          result = await this.generateCarouselBackground(category);
+        }
       } else {
+        // 通常の画像生成
         result = await this.generateCarouselBackground(category);
       }
 
@@ -261,10 +415,28 @@ export class GeminiImageGenerator {
       }
 
       // レート制限対策
-      await this.delay(1000);
+      await this.delay(1500);
     }
 
     return backgrounds;
+  }
+
+  /**
+   * カテゴリに基づいて元写真を使用すべきか判定
+   */
+  private shouldUseRawPhotos(category: string): boolean {
+    const categoryLower = category.toLowerCase();
+    const useRawPhotoCategories = [
+      'お知らせ', 'announcement', '告知',
+      '授業', 'lesson', '学習',
+      '活動', 'activity', 'イベント',
+      '成功', 'success', '実績', '事例',
+      'チーム', 'team', 'メンバー',
+    ];
+
+    return useRawPhotoCategories.some((keyword) =>
+      categoryLower.includes(keyword.toLowerCase())
+    );
   }
 
   private delay(ms: number): Promise<void> {

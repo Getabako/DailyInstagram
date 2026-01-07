@@ -27,7 +27,6 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      background: linear-gradient(135deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.5) 100%);
     }
 
     .background-image {
@@ -37,24 +36,109 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      z-index: -1;
+      z-index: 0;
+    }
+
+    /* Colorful gradient overlay */
+    .gradient-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 0, 128, 0.7) 0%,
+        rgba(128, 0, 255, 0.6) 25%,
+        rgba(0, 128, 255, 0.5) 50%,
+        rgba(0, 255, 128, 0.4) 75%,
+        rgba(255, 128, 0, 0.5) 100%
+      );
+      z-index: 1;
+    }
+
+    /* Animated sparkle decorations */
+    .sparkle {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background: radial-gradient(circle, #fff 0%, transparent 70%);
+      border-radius: 50%;
+      z-index: 2;
+    }
+
+    .sparkle-1 { top: 10%; left: 15%; width: 40px; height: 40px; }
+    .sparkle-2 { top: 25%; right: 10%; width: 25px; height: 25px; }
+    .sparkle-3 { top: 60%; left: 8%; width: 35px; height: 35px; }
+    .sparkle-4 { bottom: 20%; right: 15%; width: 45px; height: 45px; }
+    .sparkle-5 { top: 40%; left: 25%; width: 20px; height: 20px; }
+    .sparkle-6 { bottom: 35%; left: 12%; width: 28px; height: 28px; }
+    .sparkle-7 { top: 15%; right: 25%; width: 32px; height: 32px; }
+
+    /* Geometric decorations */
+    .deco-circle {
+      position: absolute;
+      border-radius: 50%;
+      z-index: 2;
+    }
+
+    .deco-circle-1 {
+      top: -100px;
+      right: -100px;
+      width: 400px;
+      height: 400px;
+      background: linear-gradient(135deg, rgba(255, 215, 0, 0.4), rgba(255, 107, 53, 0.3));
+    }
+
+    .deco-circle-2 {
+      bottom: -150px;
+      left: -150px;
+      width: 500px;
+      height: 500px;
+      background: linear-gradient(45deg, rgba(78, 205, 196, 0.4), rgba(85, 98, 255, 0.3));
+    }
+
+    /* Neon border frame */
+    .neon-frame {
+      position: absolute;
+      top: 40px;
+      left: 40px;
+      right: 40px;
+      bottom: 40px;
+      border: 6px solid transparent;
+      border-image: linear-gradient(135deg, #FF6B35, #FFE66D, #4ECDC4, #FF6B9D) 1;
+      z-index: 2;
+    }
+
+    .neon-frame::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
     }
 
     .content {
       text-align: center;
       padding: 60px;
-      z-index: 1;
+      z-index: 10;
+      position: relative;
     }
 
     .headline {
-      font-size: 120px;
+      font-size: 110px;
       font-weight: 900;
       color: #ffffff;
       text-shadow:
-        -6px -6px 0 #FF6B35,
-        6px -6px 0 #FF6B35,
-        -6px 6px 0 #FF6B35,
-        6px 6px 0 #FF6B35,
+        0 0 20px #FF6B35,
+        0 0 40px #FF6B35,
+        0 0 60px rgba(255, 107, 53, 0.5),
+        -5px -5px 0 #FF6B35,
+        5px -5px 0 #FF6B35,
+        -5px 5px 0 #FF6B35,
+        5px 5px 0 #FF6B35,
         -8px -8px 0 #000,
         8px -8px 0 #000,
         -8px 8px 0 #000,
@@ -65,53 +149,132 @@
     }
 
     .subtext {
-      font-size: 56px;
+      font-size: 52px;
       font-weight: 700;
-      color: #FFE66D;
-      text-shadow:
-        -4px -4px 0 #000,
-        4px -4px 0 #000,
-        -4px 4px 0 #000,
-        4px 4px 0 #000;
+      color: #ffffff;
+      background: linear-gradient(90deg, #FFE66D, #FF6B9D, #4ECDC4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: none;
       line-height: 1.4;
+      padding: 20px 40px;
+      position: relative;
+    }
+
+    .subtext::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 20px;
+      z-index: -1;
     }
 
     .brand-badge {
       position: absolute;
-      bottom: 60px;
-      right: 60px;
-      background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+      bottom: 80px;
+      right: 80px;
+      background: linear-gradient(135deg, #FF6B35 0%, #FF6B9D 50%, #FFE66D 100%);
       color: white;
-      font-size: 36px;
+      font-size: 42px;
       font-weight: 900;
-      padding: 20px 40px;
-      border-radius: 50px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+      padding: 25px 50px;
+      border-radius: 60px;
+      box-shadow:
+        0 10px 40px rgba(255, 107, 53, 0.5),
+        0 0 30px rgba(255, 107, 53, 0.3),
+        inset 0 -3px 10px rgba(0, 0, 0, 0.2);
+      z-index: 10;
+      border: 3px solid rgba(255, 255, 255, 0.4);
     }
 
     .slide-indicator {
       position: absolute;
-      bottom: 60px;
-      left: 60px;
+      bottom: 90px;
+      left: 80px;
       display: flex;
-      gap: 12px;
+      gap: 15px;
+      z-index: 10;
     }
 
     .indicator-dot {
-      width: 20px;
-      height: 20px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.4);
+      background: rgba(255, 255, 255, 0.4);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
     }
 
     .indicator-dot.active {
-      background: #FFE66D;
+      background: linear-gradient(135deg, #FFE66D, #FF6B35);
+      box-shadow: 0 0 20px #FFE66D;
+    }
+
+    /* Corner decorations */
+    .corner-deco {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      z-index: 3;
+    }
+
+    .corner-tl {
+      top: 60px;
+      left: 60px;
+      border-top: 8px solid #FFE66D;
+      border-left: 8px solid #FFE66D;
+    }
+
+    .corner-tr {
+      top: 60px;
+      right: 60px;
+      border-top: 8px solid #4ECDC4;
+      border-right: 8px solid #4ECDC4;
+    }
+
+    .corner-bl {
+      bottom: 60px;
+      left: 60px;
+      border-bottom: 8px solid #FF6B9D;
+      border-left: 8px solid #FF6B9D;
+    }
+
+    .corner-br {
+      bottom: 60px;
+      right: 60px;
+      border-bottom: 8px solid #FF6B35;
+      border-right: 8px solid #FF6B35;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <img class="background-image" src="{{BACKGROUND_IMAGE}}" alt="">
+    <div class="gradient-overlay"></div>
+
+    <!-- Sparkle effects -->
+    <div class="sparkle sparkle-1"></div>
+    <div class="sparkle sparkle-2"></div>
+    <div class="sparkle sparkle-3"></div>
+    <div class="sparkle sparkle-4"></div>
+    <div class="sparkle sparkle-5"></div>
+    <div class="sparkle sparkle-6"></div>
+    <div class="sparkle sparkle-7"></div>
+
+    <!-- Geometric decorations -->
+    <div class="deco-circle deco-circle-1"></div>
+    <div class="deco-circle deco-circle-2"></div>
+
+    <!-- Corner decorations -->
+    <div class="corner-deco corner-tl"></div>
+    <div class="corner-deco corner-tr"></div>
+    <div class="corner-deco corner-bl"></div>
+    <div class="corner-deco corner-br"></div>
+
     <div class="content">
       <h1 class="headline">{{HEADLINE}}</h1>
       <p class="subtext">{{SUBTEXT}}</p>
