@@ -7,9 +7,10 @@ on:
       workflow_type:
         description: '実行するワークフロー'
         required: true
-        default: 'morning'
+        default: 'both'
         type: choice
         options:
+          - both
           - morning
           - evening
 
@@ -41,7 +42,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Puppeteer dependencies
+      - name: Install Puppeteer and Remotion dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y \
@@ -55,7 +56,11 @@ jobs:
             libxfixes3 \
             libxrandr2 \
             libcups2 \
-            libasound2t64
+            libasound2t64 \
+            ffmpeg \
+            chromium-browser \
+            fonts-noto-cjk \
+            fonts-noto-cjk-extra
 
       - name: Determine workflow type
         id: workflow
@@ -69,7 +74,7 @@ jobs:
           fi
 
       - name: Run Morning Workflow (Carousel)
-        if: steps.workflow.outputs.type == 'morning'
+        if: steps.workflow.outputs.type == 'morning' || steps.workflow.outputs.type == 'both'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           INSTAGRAM_BUSINESS_ACCOUNT_ID: ${{ secrets.INSTAGRAM_BUSINESS_ACCOUNT_ID }}
@@ -77,11 +82,12 @@ jobs:
         run: npm run daily:morning
 
       - name: Run Evening Workflow (Reel)
-        if: steps.workflow.outputs.type == 'evening'
+        if: steps.workflow.outputs.type == 'evening' || steps.workflow.outputs.type == 'both'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           INSTAGRAM_BUSINESS_ACCOUNT_ID: ${{ secrets.INSTAGRAM_BUSINESS_ACCOUNT_ID }}
           INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+          PUPPETEER_EXECUTABLE_PATH: /usr/bin/chromium-browser
         run: npm run daily:evening
 
       - name: Upload generated assets

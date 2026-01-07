@@ -21,6 +21,9 @@ import type { ReelGenerationResult, Topic, Slide } from './lib/types.js';
 const LOGO_PATH = path.join(PATHS.rawPhotos, 'logo.png');
 const THANKS_IMAGE_PATH = path.join(PATHS.rawPhotos, 'ifjukuthanks.png');
 
+// CI環境でのブラウザパス（GitHub Actions等）
+const BROWSER_EXECUTABLE = process.env.PUPPETEER_EXECUTABLE_PATH || undefined;
+
 interface GenerateReelOptions {
   topicId?: string;
   duration?: 15 | 30; // 秒数
@@ -91,6 +94,9 @@ export async function generateReel(
       serveUrl: bundleLocation,
       id: compositionId,
       inputProps,
+      chromiumOptions: BROWSER_EXECUTABLE ? {
+        executablePath: BROWSER_EXECUTABLE,
+      } : undefined,
     });
 
     // 5. 動画をレンダリング
@@ -106,6 +112,9 @@ export async function generateReel(
       codec: 'h264',
       outputLocation: outputPath,
       inputProps,
+      chromiumOptions: BROWSER_EXECUTABLE ? {
+        executablePath: BROWSER_EXECUTABLE,
+      } : undefined,
     });
 
     const durationTime = ((Date.now() - startTime) / 1000).toFixed(1);
