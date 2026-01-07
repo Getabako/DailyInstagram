@@ -24,6 +24,24 @@ const THANKS_IMAGE_PATH = path.join(PATHS.rawPhotos, 'ifjukuthanks.png');
 // CI環境でのブラウザパス（GitHub Actions等）
 const BROWSER_EXECUTABLE = process.env.PUPPETEER_EXECUTABLE_PATH || undefined;
 
+/**
+ * 画像ファイルをBase64データURLに変換
+ * Remotionのブラウザはfile://プロトコルを許可しないため、Base64に変換
+ */
+async function imageToDataUrl(imagePath: string): Promise<string> {
+  try {
+    const absolutePath = path.resolve(imagePath);
+    const imageBuffer = await fs.readFile(absolutePath);
+    const base64 = imageBuffer.toString('base64');
+    const ext = path.extname(imagePath).toLowerCase();
+    const mimeType = ext === '.png' ? 'image/png' : 'image/jpeg';
+    return `data:${mimeType};base64,${base64}`;
+  } catch (error) {
+    logger.error(`画像の読み込みに失敗: ${imagePath}`);
+    throw error;
+  }
+}
+
 interface GenerateReelOptions {
   topicId?: string;
   duration?: 15 | 30; // 秒数
@@ -73,21 +91,28 @@ export async function generateReel(
 
     logger.success(`${backgroundImages.length} 枚の背景画像を生成しました`);
 
-    // 3. Remotion でバンドルを作成
+    // 3. 画像をBase64データURLに変換（file://プロトコル問題を回避）
+    logger.info('画像をBase64に変換中...');
+    const backgroundDataUrls = await Promise.all(
+      backgroundImages.map((img) => imageToDataUrl(img))
+    );
+    const logoDataUrl = await imageToDataUrl(LOGO_PATH);
+    const thanksDataUrl = await imageToDataUrl(THANKS_IMAGE_PATH);
+    logger.success('画像の変換完了');
+
+    // 4. Remotion でバンドルを作成
     logger.info('Remotion バンドルを作成中...');
     const bundleLocation = await bundle({
       entryPoint: path.resolve('./src/remotion/index.ts'),
       webpackOverride: (config) => config,
     });
 
-    // 4. コンポジションを選択
+    // 5. コンポジションを選択
     const inputProps = {
       slides: slidesToUse,
-      backgroundImages: backgroundImages.map(
-        (img) => `file://${path.resolve(img)}`
-      ),
-      logoPath: `file://${path.resolve(LOGO_PATH)}`,
-      thanksImagePath: `file://${path.resolve(THANKS_IMAGE_PATH)}`,
+      backgroundImages: backgroundDataUrls,
+      logoPath: logoDataUrl,
+      thanksImagePath: thanksDataUrl,
     };
 
     const composition = await selectComposition({
@@ -99,7 +124,7 @@ export async function generateReel(
       } : undefined,
     });
 
-    // 5. 動画をレンダリング
+    // 6. 動画をレンダリング
     const outputDir = path.join(PATHS.generated, topic.id);
     await fs.mkdir(outputDir, { recursive: true });
 

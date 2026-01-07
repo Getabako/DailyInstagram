@@ -5,6 +5,33 @@
 // スライドタイプ
 export type SlideType = 'cover' | 'content' | 'thanks';
 
+// カテゴリ定義（6種類）
+export type CategoryType =
+  | 'announcement'    // お知らせ
+  | 'development'     // 開発物
+  | 'activity'        // 活動報告
+  | 'education'       // 教育コラム
+  | 'ai'              // AIコラム
+  | 'business';       // ビジネスコラム
+
+// 曜日定義
+export type DayOfWeek = 0 | 1 | 2 | 3 | 4 | 5 | 6; // 0=日曜, 1=月曜, ...
+
+// カテゴリ設定（配色・曜日スケジュール）
+export interface CategoryConfig {
+  id: CategoryType;
+  name: string;
+  nameJp: string;
+  colors: {
+    primary: string;
+    secondary: string;
+    accent: string;
+    gradient: string;
+  };
+  scheduledDays: DayOfWeek[];
+  description: string;
+}
+
 // スライド定義
 export interface Slide {
   type: SlideType;
@@ -17,18 +44,22 @@ export interface Slide {
 // トピック定義
 export interface Topic {
   id: string;
-  category: string;
+  category: CategoryType;
   title: string;
   slides: Slide[];
   caption: string;
+  usedCount?: number;
+  lastUsedAt?: string;
 }
 
 // トピックデータ全体
 export interface TopicsData {
   topics: Topic[];
+  categories: CategoryConfig[];
   settings: {
-    rotationMode: 'sequential' | 'random';
+    rotationMode: 'sequential' | 'random' | 'weekday';
     lastUsedIndex: number;
+    lastUsedByCategory: Record<CategoryType, number>;
   };
 }
 

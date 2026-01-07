@@ -1,9 +1,135 @@
 {
+  "categories": [
+    {
+      "id": "announcement",
+      "name": "Announcement",
+      "nameJp": "お知らせ",
+      "colors": {
+        "primary": "#FF1744",
+        "secondary": "#FF4081",
+        "accent": "#FFE66D",
+        "gradient": "linear-gradient(135deg, #FF1744 0%, #FF4081 50%, #FF6B9D 100%)"
+      },
+      "scheduledDays": [1],
+      "description": "セミナー開催、新コース募集、休校情報など、即時性の高い情報"
+    },
+    {
+      "id": "development",
+      "name": "Development",
+      "nameJp": "開発物",
+      "colors": {
+        "primary": "#00BCD4",
+        "secondary": "#536DFE",
+        "accent": "#00E5FF",
+        "gradient": "linear-gradient(135deg, #00BCD4 0%, #536DFE 50%, #7C4DFF 100%)"
+      },
+      "scheduledDays": [3],
+      "description": "技術力の証明、生徒の成果物紹介"
+    },
+    {
+      "id": "activity",
+      "name": "Activity Report",
+      "nameJp": "活動報告",
+      "colors": {
+        "primary": "#4CAF50",
+        "secondary": "#8BC34A",
+        "accent": "#FFEB3B",
+        "gradient": "linear-gradient(135deg, #4CAF50 0%, #8BC34A 50%, #CDDC39 100%)"
+      },
+      "scheduledDays": [0, 6],
+      "description": "教室の雰囲気、信頼感の醸成、楽しそうな様子"
+    },
+    {
+      "id": "education",
+      "name": "Education Column",
+      "nameJp": "教育コラム",
+      "colors": {
+        "primary": "#FF9800",
+        "secondary": "#4CAF50",
+        "accent": "#FFEB3B",
+        "gradient": "linear-gradient(135deg, #FF9800 0%, #4CAF50 50%, #8BC34A 100%)"
+      },
+      "scheduledDays": [2],
+      "description": "保護者への啓蒙、教育方針の提示"
+    },
+    {
+      "id": "ai",
+      "name": "AI Column",
+      "nameJp": "AIコラム",
+      "colors": {
+        "primary": "#2196F3",
+        "secondary": "#00BCD4",
+        "accent": "#00E5FF",
+        "gradient": "linear-gradient(135deg, #2196F3 0%, #00BCD4 50%, #00E5FF 100%)"
+      },
+      "scheduledDays": [4],
+      "description": "情報感度の高さアピール、保存されやすいコンテンツ"
+    },
+    {
+      "id": "business",
+      "name": "Business Column",
+      "nameJp": "ビジネスコラム",
+      "colors": {
+        "primary": "#FFC107",
+        "secondary": "#212121",
+        "accent": "#FFD700",
+        "gradient": "linear-gradient(135deg, #FFC107 0%, #FF9800 50%, #FFD700 100%)"
+      },
+      "scheduledDays": [5],
+      "description": "子供の自立心刺激、実益への期待（稼ぐ系）"
+    }
+  ],
   "topics": [
     {
       "id": "announcement-001",
-      "category": "事業のお知らせ",
-      "title": "新規コース開講のお知らせ",
+      "category": "announcement",
+      "title": "夏期講習募集",
+      "slides": [
+        {
+          "type": "cover",
+          "headline": "【緊急募集】",
+          "subtext": "夏期講習、残り3席！"
+        },
+        {
+          "type": "content",
+          "headline": "何が起きる？",
+          "points": [
+            "この夏、最強のAI合宿を開催",
+            "3日間の集中プログラム",
+            "現役エンジニアが直接指導"
+          ]
+        },
+        {
+          "type": "content",
+          "headline": "参加メリット",
+          "points": [
+            "3日でオリジナルアプリ完成",
+            "受験にも役立つ実績作り",
+            "仲間と一緒に成長できる"
+          ]
+        },
+        {
+          "type": "content",
+          "headline": "開催詳細",
+          "points": [
+            "8月12日〜14日 開催",
+            "オンライン参加OK",
+            "初心者大歓迎！"
+          ]
+        },
+        {
+          "type": "thanks",
+          "headline": "お申込みはお早めに！",
+          "cta": "詳細・申込はプロフのリンクから"
+        }
+      ],
+      "caption": "🔥【緊急募集】夏期講習、残り3席！\n\nこの夏、if塾で最強のAI合宿を開催します！\n\n📅 8月12日〜14日\n💻 オンライン参加OK\n👶 初心者大歓迎\n\n✅ 3日でオリジナルアプリが完成\n✅ 受験にも役立つ実績作り\n✅ 現役エンジニアが直接指導\n\n詳細・申込はプロフィールのリンクから！\n質問はDMでお気軽に👋\n\n#夏期講習 #プログラミング教室 #AI学習 #小中高生 #if塾",
+      "usedCount": 0
+    },
+    {
+      "id": "announcement-002",
+      "category": "announcement",
+      "title": "新コース開講",
       "slides": [
         {
           "type": "cover",
@@ -12,171 +138,457 @@
         },
         {
           "type": "content",
-          "headline": "対象者",
+          "headline": "何を学ぶ？",
           "points": [
-            "プログラミング初心者",
+            "ChatGPTを使いこなす技術",
+            "画像生成AIでクリエイティブ制作",
+            "業務自動化の基礎"
+          ]
+        },
+        {
+          "type": "content",
+          "headline": "受講メリット",
+          "points": [
+            "最新AI技術を体系的に習得",
+            "実践的なスキルが身につく",
+            "将来のキャリアに直結"
+          ]
+        },
+        {
+          "type": "content",
+          "headline": "こんな人に最適",
+          "points": [
+            "プログラミング初心者OK",
             "AIに興味がある方",
-            "副業を始めたい方"
-          ]
-        },
-        {
-          "type": "content",
-          "headline": "学べること",
-          "points": [
-            "ChatGPT活用術",
-            "画像生成AI",
-            "業務自動化"
-          ]
-        },
-        {
-          "type": "content",
-          "headline": "特典",
-          "points": [
-            "無料体験レッスン",
-            "教材プレゼント",
-            "個別サポート"
+            "副業を始めたい社会人も"
           ]
         },
         {
           "type": "thanks",
-          "headline": "まずは無料相談から",
-          "cta": "プロフィールのリンクをチェック！"
+          "headline": "無料体験実施中！",
+          "cta": "プロフのリンクから予約"
         }
       ],
-      "caption": "🎉 新コース開講のお知らせ！\n\nAI×プログラミングの基礎から学べる入門コースが登場しました。\n\n✅ プログラミング初心者OK\n✅ AIツールの活用法を実践\n✅ 副業・キャリアアップに直結\n\n詳しくはプロフィールのリンクから！\n\n#AI学習 #プログラミング初心者 #副業 #スキルアップ #if塾"
+      "caption": "🎉 新コース開講のお知らせ！\n\n【AI×プログラミング入門】\n\n学べること👇\n✅ ChatGPT活用術\n✅ 画像生成AIでクリエイティブ制作\n✅ 業務自動化の基礎\n\n初心者から社会人まで、誰でも参加OK！\n\n🎁 今なら無料体験実施中\n詳しくはプロフィールのリンクから！\n\n#新コース #AI学習 #プログラミング初心者 #副業 #if塾",
+      "usedCount": 0
     },
     {
-      "id": "success-story-001",
-      "category": "成長事例",
-      "title": "受講生の収益化成功事例",
+      "id": "announcement-003",
+      "category": "announcement",
+      "title": "無料説明会開催",
       "slides": [
         {
           "type": "cover",
-          "headline": "収益化成功！",
-          "subtext": "受講3ヶ月で月5万円達成"
+          "headline": "無料説明会",
+          "subtext": "AI時代の学び方、教えます"
         },
         {
           "type": "content",
-          "headline": "Before",
+          "headline": "説明会の内容",
           "points": [
-            "完全未経験",
-            "PCスキル初心者",
-            "副業経験なし"
+            "if塾のカリキュラム紹介",
+            "AI時代に必要なスキルとは",
+            "個別相談タイムあり"
           ]
         },
         {
           "type": "content",
-          "headline": "学んだこと",
+          "headline": "参加特典",
           "points": [
-            "Webライティング",
-            "AI活用術",
-            "クライアント対応"
+            "入会金50%OFF",
+            "教材サンプルプレゼント",
+            "AI活用ガイドブック進呈"
           ]
         },
         {
           "type": "content",
-          "headline": "After",
+          "headline": "開催情報",
           "points": [
-            "月5万円の副収入",
-            "継続案件を獲得",
-            "自信がついた"
+            "毎週土曜 14:00〜",
+            "オンライン参加可能",
+            "保護者の方のみの参加もOK"
           ]
         },
         {
           "type": "thanks",
-          "headline": "あなたも始めませんか？",
-          "cta": "無料相談受付中！"
+          "headline": "お気軽にご参加ください！",
+          "cta": "予約はプロフのリンクから"
         }
       ],
-      "caption": "✨ 受講生の成功事例をご紹介！\n\n【Before】\n・完全未経験からスタート\n・PCスキルも初心者レベル\n\n【After】\n・わずか3ヶ月で月5万円の副収入！\n・継続案件も獲得\n\nあなたも一歩踏み出してみませんか？\n\n#副業成功 #スキルアップ #収益化 #AI副業 #if塾"
+      "caption": "📢 無料説明会開催中！\n\n「AI時代の学び方」を知りたい方へ\n\n説明会でわかること👇\n✅ if塾のカリキュラム\n✅ AI時代に必要なスキル\n✅ お子様に合った学び方\n\n🎁 参加特典\n・入会金50%OFF\n・教材サンプルプレゼント\n\n📅 毎週土曜 14:00〜\n💻 オンライン参加OK\n\n#無料説明会 #プログラミング教室 #AI教育 #保護者向け #if塾",
+      "usedCount": 0
     },
     {
-      "id": "column-ai-001",
-      "category": "AIコラム",
-      "title": "ChatGPTの効果的な使い方",
+      "id": "development-001",
+      "category": "development",
+      "title": "高校生AIアプリ開発",
       "slides": [
         {
           "type": "cover",
-          "headline": "ChatGPT活用術",
-          "subtext": "これで10倍効率UP！"
+          "headline": "高校生が作った",
+          "subtext": "AIアプリが凄すぎる"
         },
         {
           "type": "content",
-          "headline": "コツ①",
+          "headline": "解決した課題",
           "points": [
-            "役割を明確に指示",
-            "例: あなたは○○の専門家です"
+            "単語暗記が面倒くさい…",
+            "通学時間を有効活用したい",
+            "自分専用の問題集が欲しい"
           ]
         },
         {
           "type": "content",
-          "headline": "コツ②",
+          "headline": "どう動く？",
           "points": [
-            "具体的な条件を伝える",
-            "文字数・形式・トーンを指定"
+            "写真を撮るだけ！",
+            "AIが重要単語を自動抽出",
+            "オリジナルクイズを生成"
           ]
         },
         {
           "type": "content",
-          "headline": "コツ③",
+          "headline": "使った結果",
           "points": [
-            "段階的に質問する",
-            "一度に全部聞かない"
+            "通学時間が最強の勉強時間に",
+            "クラス全員で使用中",
+            "テストの点数UP！"
           ]
         },
         {
           "type": "thanks",
-          "headline": "保存して試してね！",
-          "cta": "フォローで最新情報をGET"
+          "headline": "こんなアプリ作りたい人",
+          "cta": "募集中！DMでお問合せを"
         }
       ],
-      "caption": "💡 ChatGPTを10倍活用するコツ\n\n① 役割を明確に指示する\n→「あなたは〇〇の専門家です」\n\n② 具体的な条件を伝える\n→ 文字数、形式、トーンを指定\n\n③ 段階的に質問する\n→ 一度に全部聞かない\n\n保存して試してみてね！\n\n#ChatGPT #AI活用 #プロンプト #効率化 #if塾"
+      "caption": "🔥 高校生が作ったAIアプリが凄すぎる\n\n【開発したアプリ】\n写真を撮るだけで、AIが重要単語を抽出してクイズ化！\n\n💡 きっかけ\n「単語暗記が面倒くさい…」という自分の悩みを解決\n\n📱 結果\n・通学時間が最強の勉強時間に\n・クラス全員で使ってます\n\nこんなアプリを作れるようになりたい人、募集中！\n\n#学生開発 #AIアプリ #プログラミング学習 #高校生 #if塾",
+      "usedCount": 0
     },
     {
-      "id": "ai-news-001",
-      "category": "最新AI情報",
-      "title": "2024年注目のAIトレンド",
+      "id": "development-002",
+      "category": "development",
+      "title": "3時間で作ったWebサイト",
       "slides": [
         {
           "type": "cover",
-          "headline": "AIトレンド2024",
-          "subtext": "押さえておきたい5つのポイント"
+          "headline": "3時間でこれ",
+          "subtext": "はヤバい…"
         },
         {
           "type": "content",
-          "headline": "トレンド①",
+          "headline": "制作背景",
           "points": [
-            "マルチモーダルAI",
-            "テキスト×画像×音声の統合"
+            "部活のホームページが欲しい",
+            "予算ゼロで作りたい",
+            "更新が簡単なものを"
           ]
         },
         {
           "type": "content",
-          "headline": "トレンド②",
+          "headline": "使った技術",
           "points": [
-            "AIエージェント",
-            "自律的にタスクを実行"
+            "AIでデザイン案を生成",
+            "ノーコードツールで構築",
+            "Canvaで画像を制作"
           ]
         },
         {
           "type": "content",
-          "headline": "トレンド③",
+          "headline": "完成したサイト",
           "points": [
-            "ローカルAI",
-            "プライバシー重視の時代へ"
+            "スマホ対応のモダンデザイン",
+            "部員が自分で更新可能",
+            "顧問の先生にも大好評！"
           ]
         },
         {
           "type": "thanks",
-          "headline": "最新情報をお届け！",
-          "cta": "フォローして見逃さないで"
+          "headline": "Webサイト制作も学べます",
+          "cta": "詳細はプロフのリンクへ"
         }
       ],
-      "caption": "🔥 2024年注目のAIトレンド\n\n1️⃣ マルチモーダルAI\n→ テキスト×画像×音声が統合\n\n2️⃣ AIエージェント\n→ 自律的にタスクを実行\n\n3️⃣ ローカルAI\n→ プライバシー重視の時代\n\n最新情報はフォローでチェック！\n\n#AI #トレンド #テクノロジー #最新情報 #if塾"
+      "caption": "⚡️ 3時間でこれはヤバい…\n\n中学生が作った部活のホームページ！\n\n🛠️ 使った技術\n・AIでデザイン案を生成\n・ノーコードツールで構築\n・Canvaで画像制作\n\n✨ 完成サイトの特徴\n・スマホ対応のモダンデザイン\n・部員が自分で更新可能\n\nプログラミングを知らなくても、ここまで作れる時代！\n\n#Web制作 #ノーコード #中学生 #部活 #if塾",
+      "usedCount": 0
     },
     {
-      "id": "education-column-001",
-      "category": "教育コラム",
+      "id": "development-003",
+      "category": "development",
+      "title": "AIチャットボット開発",
+      "slides": [
+        {
+          "type": "cover",
+          "headline": "小学生が作った",
+          "subtext": "AIチャットボット"
+        },
+        {
+          "type": "content",
+          "headline": "何を作った？",
+          "points": [
+            "宿題をサポートするAIボット",
+            "分からない問題を教えてくれる",
+            "ヒントから答えまで段階的に"
+          ]
+        },
+        {
+          "type": "content",
+          "headline": "工夫したポイント",
+          "points": [
+            "いきなり答えを出さない",
+            "考え方のヒントを先に提示",
+            "励ましの言葉も入れた"
+          ]
+        },
+        {
+          "type": "content",
+          "headline": "反響",
+          "points": [
+            "家族に使ってもらった",
+            "妹の勉強に大活躍",
+            "お母さんにも褒められた！"
+          ]
+        },
+        {
+          "type": "thanks",
+          "headline": "AIを作る側になろう",
+          "cta": "無料体験はプロフから"
+        }
+      ],
+      "caption": "🤖 小学生が作ったAIチャットボット\n\n【作ったもの】\n宿題をサポートするAIボット\n\n💡 こだわりポイント\n・いきなり答えを出さない\n・考え方のヒントを先に提示\n・励ましの言葉も入れた\n\n👨‍👩‍👧 家族の反応\n「妹の勉強に大活躍！」\n「お母さんにも褒められた！」\n\nAIを使う側から、作る側へ。\n\n#小学生プログラマー #AI開発 #チャットボット #子供の作品 #if塾",
+      "usedCount": 0
+    },
+    {
+      "id": "activity-001",
+      "category": "activity",
+      "title": "ハッカソン優勝報告",
+      "slides": [
+        {
+          "type": "cover",
+          "headline": "ハッカソン優勝！",
+          "subtext": "おめでとう🎉"
+        },
+        {
+          "type": "content",
+          "headline": "今日何をした？",
+          "points": [
+            "外部のAIハッカソンに参加",
+            "8時間でアプリを開発",
+            "全国から50チーム参加"
+          ]
+        },
+        {
+          "type": "content",
+          "headline": "生徒の様子",
+          "points": [
+            "最初は緊張気味だった",
+            "後半の集中力が凄かった",
+            "チームワークが光った！"
+          ]
+        },
+        {
+          "type": "content",
+          "headline": "先生の気付き",
+          "points": [
+            "大人より柔軟な発想",
+            "失敗を恐れないチャレンジ精神",
+            "成長スピードに感動"
+          ]
+        },
+        {
+          "type": "thanks",
+          "headline": "次は君の番！",
+          "cta": "無料体験授業、毎日実施中"
+        }
+      ],
+      "caption": "🏆 ハッカソン優勝しました！\n\nif塾の生徒チームが、全国AIハッカソンで優勝！\n\n📊 大会詳細\n・全国から50チーム参加\n・8時間でアプリ開発\n・審査員は現役エンジニア\n\n👀 生徒の様子\n最初は緊張していたけど、後半の集中力が凄かった！\n\n👨‍🏫 先生として感じたこと\n大人が教えるより、子供の柔軟な発想の方が進んでいるかも。\n\n次は君の番！無料体験実施中🔥\n\n#ハッカソン優勝 #プログラミング教室 #AI #挑戦 #if塾",
+      "usedCount": 0
+    },
+    {
+      "id": "activity-002",
+      "category": "activity",
+      "title": "今日の授業風景",
+      "slides": [
+        {
+          "type": "cover",
+          "headline": "今日の授業",
+          "subtext": "盛り上がりすぎたｗ"
+        },
+        {
+          "type": "content",
+          "headline": "今日やったこと",
+          "points": [
+            "AIを使ったゲーム制作",
+            "自分だけのキャラを生成",
+            "オリジナルストーリーを作成"
+          ]
+        },
+        {
+          "type": "content",
+          "headline": "生徒の反応",
+          "points": [
+            "「めっちゃ楽しい！」の声",
+            "時間を忘れて没頭",
+            "「もっとやりたい！」の嵐"
+          ]
+        },
+        {
+          "type": "content",
+          "headline": "今日の学び",
+          "points": [
+            "AIは道具、使う人次第",
+            "想像力を形にする楽しさ",
+            "失敗しても大丈夫という経験"
+          ]
+        },
+        {
+          "type": "thanks",
+          "headline": "一緒に学ぼう！",
+          "cta": "見学に来てね"
+        }
+      ],
+      "caption": "🎮 今日の授業、盛り上がりすぎたｗ\n\n【今日のテーマ】\nAIを使ったゲーム制作！\n\n✨ やったこと\n・自分だけのキャラをAIで生成\n・オリジナルストーリーを作成\n・簡単なゲームに組み込み\n\n👦👧 生徒の反応\n「めっちゃ楽しい！」\n「もっとやりたい！」\n\n時間を忘れて没頭してました😊\n\n見学いつでも歓迎！\n\n#プログラミング教室 #ゲーム制作 #AI #授業風景 #if塾",
+      "usedCount": 0
+    },
+    {
+      "id": "activity-003",
+      "category": "activity",
+      "title": "発表会レポート",
+      "slides": [
+        {
+          "type": "cover",
+          "headline": "発表会",
+          "subtext": "大成功でした！"
+        },
+        {
+          "type": "content",
+          "headline": "発表会の様子",
+          "points": [
+            "半年間の成果を発表",
+            "保護者の方も見学",
+            "10名の生徒が登壇"
+          ]
+        },
+        {
+          "type": "content",
+          "headline": "印象的だったこと",
+          "points": [
+            "堂々としたプレゼン",
+            "質疑応答もバッチリ",
+            "保護者の方が感動の涙"
+          ]
+        },
+        {
+          "type": "content",
+          "headline": "生徒の声",
+          "points": [
+            "「緊張したけど楽しかった」",
+            "「もっと良いもの作りたい」",
+            "「来年も頑張る！」"
+          ]
+        },
+        {
+          "type": "thanks",
+          "headline": "みんなお疲れ様！",
+          "cta": "次回発表会も乞うご期待"
+        }
+      ],
+      "caption": "👏 発表会、大成功でした！\n\n半年間の成果を発表する日。\n保護者の方にも見学いただきました。\n\n✨ 印象的だったこと\n・堂々としたプレゼン姿\n・質疑応答もバッチリ\n・保護者の方が感動の涙...\n\n👦👧 生徒の声\n「緊張したけど楽しかった」\n「もっと良いもの作りたい」\n\n成長を見せてくれてありがとう！\n\n#発表会 #プログラミング教室 #成長 #プレゼン #if塾",
+      "usedCount": 0
+    },
+    {
+      "id": "education-001",
+      "category": "education",
+      "title": "プログラミング不要論への反論",
+      "slides": [
+        {
+          "type": "cover",
+          "headline": "プログラミングは不要",
+          "subtext": "は本当か？"
+        },
+        {
+          "type": "content",
+          "headline": "世の中の流れ",
+          "points": [
+            "ただコードを書く仕事は減少",
+            "AIがコードを自動生成する時代",
+            "「プログラマー不要論」も登場"
+          ]
+        },
+        {
+          "type": "content",
+          "headline": "if塾の考え",
+          "points": [
+            "重要なのは「何を作るか」",
+            "設計する力・発想する力が本質",
+            "AIを使いこなす側になること"
+          ]
+        },
+        {
+          "type": "content",
+          "headline": "今やるべきこと",
+          "points": [
+            "若いうちからAIを「使う側」に",
+            "論理的思考力を鍛える",
+            "作りたいものを形にする経験"
+          ]
+        },
+        {
+          "type": "thanks",
+          "headline": "ためになったら保存！",
+          "cta": "教育相談もDMで受付中"
+        }
+      ],
+      "caption": "🤔「プログラミングは不要」は本当か？\n\n確かに、ただコードを書くだけの仕事はAIに代替されつつあります。\n\nでも、本当に重要なのは...\n\n✅ 「何を作るか」を設計する力\n✅ AIを使いこなす側になること\n✅ 論理的に考え、形にする経験\n\nだからこそ、若いうちから\n「AIを使う側」に回る経験が必要。\n\nためになったら保存してね📌\n教育相談もDMで受付中！\n\n#プログラミング教育 #AI時代 #子供の教育 #論理的思考 #if塾",
+      "usedCount": 0
+    },
+    {
+      "id": "education-002",
+      "category": "education",
+      "title": "AI時代に消える職業、残る職業",
+      "slides": [
+        {
+          "type": "cover",
+          "headline": "AI時代に消える職業",
+          "subtext": "残る職業"
+        },
+        {
+          "type": "content",
+          "headline": "危険信号の職業",
+          "points": [
+            "単純なデータ入力",
+            "マニュアル通りの対応",
+            "決まったパターンの繰り返し"
+          ]
+        },
+        {
+          "type": "content",
+          "headline": "生き残る職業の特徴",
+          "points": [
+            "創造性が必要な仕事",
+            "人との関係構築が中心",
+            "AIを使いこなす立場"
+          ]
+        },
+        {
+          "type": "content",
+          "headline": "子供に身につけさせたい力",
+          "points": [
+            "問題を発見する力",
+            "解決策を考える力",
+            "AIと協働する力"
+          ]
+        },
+        {
+          "type": "thanks",
+          "headline": "未来に備えよう",
+          "cta": "詳しくはプロフのリンクへ"
+        }
+      ],
+      "caption": "🔮 AI時代に消える職業、残る職業\n\n⚠️ 危険信号\n・単純なデータ入力\n・マニュアル通りの対応\n・決まったパターンの繰り返し\n\n✅ 生き残る職業の特徴\n・創造性が必要\n・人との関係構築が中心\n・AIを使いこなす立場\n\n👶 子供に身につけさせたい力\n・問題を発見する力\n・解決策を考える力\n・AIと協働する力\n\n未来に備えて、今から準備を！\n\n#AI時代 #子供の教育 #将来の職業 #保護者向け #if塾",
+      "usedCount": 0
+    },
+    {
+      "id": "education-003",
+      "category": "education",
       "title": "学び続ける人だけが成功する理由",
       "slides": [
         {
@@ -189,7 +601,8 @@
           "headline": "理由①",
           "points": [
             "変化に適応できる",
-            "新しいスキルを常に獲得"
+            "新しいスキルを常に獲得",
+            "時代に取り残されない"
           ]
         },
         {
@@ -197,7 +610,8 @@
           "headline": "理由②",
           "points": [
             "チャンスを掴める",
-            "知識が選択肢を広げる"
+            "知識が選択肢を広げる",
+            "準備ができている人に来る"
           ]
         },
         {
@@ -205,7 +619,8 @@
           "headline": "理由③",
           "points": [
             "自信がつく",
-            "成長実感がモチベーションに"
+            "成長実感がモチベーションに",
+            "挑戦を楽しめるようになる"
           ]
         },
         {
@@ -214,11 +629,296 @@
           "cta": "小さな一歩が大きな変化に"
         }
       ],
-      "caption": "📚 学び続ける人だけが成功する理由\n\n① 変化に適応できる\n→ 新しいスキルを常に獲得\n\n② チャンスを掴める\n→ 知識が選択肢を広げる\n\n③ 自信がつく\n→ 成長実感がモチベーションに\n\n今日から小さな一歩を！\n\n#学び #自己成長 #スキルアップ #成功習慣 #if塾"
+      "caption": "📚 学び続ける人だけが成功する理由\n\n① 変化に適応できる\n→ 新しいスキルを常に獲得\n\n② チャンスを掴める\n→ 知識が選択肢を広げる\n→ 準備ができている人にチャンスは来る\n\n③ 自信がつく\n→ 成長実感がモチベーションに\n→ 挑戦を楽しめるようになる\n\n今日から小さな一歩を！\n\n#学び #自己成長 #スキルアップ #成功習慣 #if塾",
+      "usedCount": 0
+    },
+    {
+      "id": "ai-001",
+      "category": "ai",
+      "title": "ChatGPTまだ普通に使ってるの？",
+      "slides": [
+        {
+          "type": "cover",
+          "headline": "ChatGPT",
+          "subtext": "まだ普通に使ってるの？"
+        },
+        {
+          "type": "content",
+          "headline": "これは何？",
+          "points": [
+            "ChatGPTの「カスタム指示」機能",
+            "毎回の指示が不要になる",
+            "自分専用のAIに変身"
+          ]
+        },
+        {
+          "type": "content",
+          "headline": "どう使う？",
+          "points": [
+            "設定から「カスタム指示」を開く",
+            "自分の情報・好みを登録",
+            "回答スタイルも指定可能"
+          ]
+        },
+        {
+          "type": "content",
+          "headline": "活用のコツ",
+          "points": [
+            "職業・目的を明確に書く",
+            "好みの回答形式を指定",
+            "定期的に更新するとGood"
+          ]
+        },
+        {
+          "type": "thanks",
+          "headline": "友達にシェアしてね！",
+          "cta": "次回は画像生成AIを紹介"
+        }
+      ],
+      "caption": "💡 ChatGPT、まだ普通に使ってるの？\n\n【カスタム指示】使ってますか？\n\n📱 これを設定すると...\n・毎回の指示が不要に\n・自分専用のAIに変身\n・回答の質が劇的UP\n\n⚙️ 設定方法\n1. 設定から「カスタム指示」を開く\n2. 自分の情報・好みを登録\n3. 回答スタイルも指定可能\n\n知らなかった人は今すぐ試してみて！\n\n#ChatGPT #AI活用 #効率化 #裏技 #if塾",
+      "usedCount": 0
+    },
+    {
+      "id": "ai-002",
+      "category": "ai",
+      "title": "画像生成AI最新比較",
+      "slides": [
+        {
+          "type": "cover",
+          "headline": "画像生成AI",
+          "subtext": "最新比較5選"
+        },
+        {
+          "type": "content",
+          "headline": "① Midjourney",
+          "points": [
+            "アート性・クオリティNo.1",
+            "Discord経由で利用",
+            "月額10ドル〜"
+          ]
+        },
+        {
+          "type": "content",
+          "headline": "② DALL-E 3",
+          "points": [
+            "ChatGPT内で使える",
+            "日本語プロンプトOK",
+            "文字入れが得意"
+          ]
+        },
+        {
+          "type": "content",
+          "headline": "③ Stable Diffusion",
+          "points": [
+            "無料で使える",
+            "自分のPCで動かせる",
+            "カスタマイズ性が高い"
+          ]
+        },
+        {
+          "type": "thanks",
+          "headline": "保存して使ってね！",
+          "cta": "詳しい使い方はDMで"
+        }
+      ],
+      "caption": "🎨 画像生成AI、最新比較5選\n\n① Midjourney\n→ アート性・クオリティNo.1\n\n② DALL-E 3\n→ ChatGPT内で使える、日本語OK\n\n③ Stable Diffusion\n→ 無料、自分のPCで動く\n\n④ Adobe Firefly\n→ 商用利用に安心\n\n⑤ Canva AI\n→ デザインと一体で便利\n\n用途に合わせて使い分けよう！\n保存してね📌\n\n#画像生成AI #Midjourney #DALLE #StableDiffusion #if塾",
+      "usedCount": 0
+    },
+    {
+      "id": "ai-003",
+      "category": "ai",
+      "title": "Gemini 2.5の凄さ",
+      "slides": [
+        {
+          "type": "cover",
+          "headline": "Gemini 2.5",
+          "subtext": "ここが凄い"
+        },
+        {
+          "type": "content",
+          "headline": "これは何？",
+          "points": [
+            "Googleの最新AIモデル",
+            "ChatGPTのライバル登場",
+            "無料でも使える"
+          ]
+        },
+        {
+          "type": "content",
+          "headline": "活用例",
+          "points": [
+            "宿題の画像を送るだけ",
+            "解説と類題を自動生成",
+            "YouTubeの要約も可能"
+          ]
+        },
+        {
+          "type": "content",
+          "headline": "注意点",
+          "points": [
+            "計算ミスがたまにある",
+            "検算は必須",
+            "使い方がカギ"
+          ]
+        },
+        {
+          "type": "thanks",
+          "headline": "試してみてね！",
+          "cta": "AI活用術はフォローでチェック"
+        }
+      ],
+      "caption": "🚀 Gemini 2.5、ここが凄い！\n\n【これは何？】\nGoogleの最新AIモデル。ChatGPTのライバル。\n\n💡 活用例\n・宿題の画像を送るだけで解説\n・類題を自動生成\n・YouTubeの要約も可能\n\n⚠️ 注意点\n・計算ミスがたまにある\n・検算は必須\n・使い方がカギ\n\n無料で使えるので試してみて！\n\n#Gemini #GoogleAI #AI活用 #最新技術 #if塾",
+      "usedCount": 0
+    },
+    {
+      "id": "business-001",
+      "category": "business",
+      "title": "中学生でも月3万稼ぐ方法",
+      "slides": [
+        {
+          "type": "cover",
+          "headline": "中学生でも",
+          "subtext": "月3万稼ぐ方法"
+        },
+        {
+          "type": "content",
+          "headline": "何を使う？",
+          "points": [
+            "生成AIでイラスト作成",
+            "LINEスタンプとして販売",
+            "誰でも簡単に始められる"
+          ]
+        },
+        {
+          "type": "content",
+          "headline": "具体的な手順",
+          "points": [
+            "① AIでイラスト生成",
+            "② 背景を透過処理",
+            "③ LINE Creators Marketへ申請"
+          ]
+        },
+        {
+          "type": "content",
+          "headline": "成功の秘訣",
+          "points": [
+            "売れるまで改善し続ける",
+            "PDCAが自然と身につく",
+            "これが最大のメリット"
+          ]
+        },
+        {
+          "type": "thanks",
+          "headline": "稼ぐ力は生きる力",
+          "cta": "一緒に学ぼう！詳細はプロフへ"
+        }
+      ],
+      "caption": "💰 中学生でも月3万稼ぐ方法\n\n【方法】\n生成AIでイラストを作成 → LINEスタンプとして販売\n\n📱 手順\n① AIでイラスト生成\n② 背景を透過処理\n③ LINE Creators Marketへ申請\n\n🔑 成功の秘訣\n売れるまで改善し続けること。\n「PDCA」が自然と身につく。\n\n稼ぐ力は生きる力。\n一緒に学ぼう！\n\n#副業 #中学生 #LINEスタンプ #AI副業 #if塾",
+      "usedCount": 0
+    },
+    {
+      "id": "business-002",
+      "category": "business",
+      "title": "高校生が月10万稼いだ話",
+      "slides": [
+        {
+          "type": "cover",
+          "headline": "高校生が月10万",
+          "subtext": "稼いだ話"
+        },
+        {
+          "type": "content",
+          "headline": "何をした？",
+          "points": [
+            "Web制作を受注",
+            "知り合いのお店のHP作成",
+            "SNSで営業活動"
+          ]
+        },
+        {
+          "type": "content",
+          "headline": "使ったスキル",
+          "points": [
+            "ノーコードツール",
+            "AI画像生成",
+            "基本的なデザイン知識"
+          ]
+        },
+        {
+          "type": "content",
+          "headline": "学んだこと",
+          "points": [
+            "お金を稼ぐ大変さ",
+            "お客様に喜ばれる嬉しさ",
+            "責任感と達成感"
+          ]
+        },
+        {
+          "type": "thanks",
+          "headline": "君も挑戦してみよう",
+          "cta": "サポート体制も充実！"
+        }
+      ],
+      "caption": "🔥 高校生が月10万稼いだ話\n\n【何をした？】\n・知り合いのお店のHP作成\n・SNSで営業活動\n・Web制作を受注\n\n🛠️ 使ったスキル\n・ノーコードツール\n・AI画像生成\n・基本的なデザイン知識\n\n📚 学んだこと\n・お金を稼ぐ大変さ\n・お客様に喜ばれる嬉しさ\n・責任感と達成感\n\n君も挑戦してみよう！\n\n#高校生副業 #Web制作 #稼ぐ #挑戦 #if塾",
+      "usedCount": 0
+    },
+    {
+      "id": "business-003",
+      "category": "business",
+      "title": "AIで作って売れるもの5選",
+      "slides": [
+        {
+          "type": "cover",
+          "headline": "AIで作って",
+          "subtext": "売れるもの5選"
+        },
+        {
+          "type": "content",
+          "headline": "① LINEスタンプ",
+          "points": [
+            "AI画像生成で作成",
+            "40個で申請可能",
+            "売れると継続収入に"
+          ]
+        },
+        {
+          "type": "content",
+          "headline": "② 電子書籍",
+          "points": [
+            "AIで文章＋表紙を作成",
+            "Kindle出版は無料",
+            "ノウハウ本が人気"
+          ]
+        },
+        {
+          "type": "content",
+          "headline": "③ デザイン素材",
+          "points": [
+            "アイコン・背景画像",
+            "ストックサイトで販売",
+            "量産できるのが強み"
+          ]
+        },
+        {
+          "type": "thanks",
+          "headline": "まずは一つ試してみよう",
+          "cta": "詳しくはプロフのリンクへ"
+        }
+      ],
+      "caption": "💡 AIで作って売れるもの5選\n\n① LINEスタンプ\n→ AI画像生成で作成、継続収入に\n\n② 電子書籍\n→ AIで文章＋表紙、Kindle出版は無料\n\n③ デザイン素材\n→ ストックサイトで販売\n\n④ 写真素材\n→ AI生成画像をストック販売\n\n⑤ 音楽・効果音\n→ AI作曲ツールで作成\n\nまずは一つ試してみよう！\n\n#AI副業 #稼ぐ #LINEスタンプ #電子書籍 #if塾",
+      "usedCount": 0
     }
   ],
   "settings": {
-    "rotationMode": "sequential",
-    "lastUsedIndex": 1
+    "rotationMode": "weekday",
+    "lastUsedIndex": 0,
+    "lastUsedByCategory": {
+      "announcement": 0,
+      "development": 0,
+      "activity": 0,
+      "education": 0,
+      "ai": 0,
+      "business": 0
+    }
   }
 }
